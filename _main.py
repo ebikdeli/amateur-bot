@@ -4,7 +4,6 @@ from telegram import ForceReply, Update
 from telegram.ext import Application, CommandHandler, ContextTypes, MessageHandler, filters
 from dotenv import dotenv_values
 
-
 # Import telegram bot token
 dotenv_vars = dotenv_values('.env')
 BOT_TOKEN = dotenv_vars.get('BOT_TOKEN', None)
@@ -25,11 +24,13 @@ logger = logging.getLogger(__name__)
 
 application = Application.builder().token(BOT_TOKEN).build()
 
-# ! Message handlers must have very specific filters
+# Message handlers must have very specific filters
 application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handlers.echo))
-application.add_handler(MessageHandler(filters.Document.TEXT, handlers.text_doc))
+# application.add_handler(MessageHandler(filters.Document.TEXT, handlers.text_doc))
+application.add_handler(MessageHandler(filters.Document.ALL, handlers.text_doc))
+application.add_handler(MessageHandler(filters.AUDIO, handlers.handle_mp3))
 
-application.add_handler(CommandHandler(['help', 'toturial'], handlers.help_handler))
+application.add_handler(CommandHandler(['help', 'tutorial'], handlers.help_handler))
 application.add_handler(CommandHandler('start', handlers.start))
 
 
