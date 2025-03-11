@@ -1,7 +1,7 @@
 import handlers
 import logging
-from telegram import ForceReply, Update
-from telegram.ext import Application, CommandHandler, ContextTypes, MessageHandler, filters
+from telegram import ForceReply, Update, BotCommand
+from telegram.ext import Application, ApplicationBuilder, CommandHandler, ContextTypes, MessageHandler, filters
 from dotenv import dotenv_values
 
 # Import telegram bot token
@@ -21,8 +21,20 @@ logging.getLogger("httpx").setLevel(logging.WARNING)
 
 logger = logging.getLogger(__name__)
 
+# Set bot commands
+# async def set_commands(application):
+#     commands = [
+#         BotCommand("start", "Start the bot"),
+#         BotCommand("help", "Show help message"),
+#         BotCommand("command1", "Description of command1"),
+#         BotCommand("command2", "Description of command2"),
+#     ]
+#     await application.bot.set_my_commands(commands)
 
-application = Application.builder().token(BOT_TOKEN).build()
+
+application: ApplicationBuilder = Application.builder().token(BOT_TOKEN).build()
+
+# application.run_polling(set_commands(application))
 
 # Message handlers must have very specific filters
 application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handlers.echo))
